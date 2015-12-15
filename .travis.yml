@@ -11,7 +11,7 @@ script:
   - go test -v -covermode=count -coverprofile=coverage.out
 
 after_success:
-  - goveralls -coverprofile=coverage.out -service=travis-ci -repotoken yFj7FrCeddvBzUaaCyG33jCLfWXeb93eA
+  - goveralls -coverprofile=coverage.out -service=travis-ci -repotoken WN2U64JpQbWzPyiuXBMXgp0zDvg4VcIOj
 
 notifications:
   webhooks:
