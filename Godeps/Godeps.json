@@ -18,10 +18,6 @@
 			"Rev": "8f2d6ace262eba462e9beb552382c98be51d807b"
 		},
 		{
-			"ImportPath": "github.com/mattn/go-colorable",
-			"Rev": "3dac7b4f76f6e17fb39b768b89e3783d16e237fe"
-		},
-		{
 			"ImportPath": "github.com/stretchr/testify/assert",
 			"Comment": "v1.0",
 			"Rev": "232e8563676cd15c3a36ba5e675ad4312ac4cb11"
