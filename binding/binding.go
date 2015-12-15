@@ -11,6 +11,8 @@ const (
 	MIMEHTML              = "text/html"
 	MIMEXML               = "application/xml"
 	MIMEXML2              = "text/xml"
+	MIMEMSGPACK					  = "application/x-msgpack"
+	MIMEMSGPACK2					= "application/msgpack"
 	MIMEPlain             = "text/plain"
 	MIMEPOSTForm          = "application/x-www-form-urlencoded"
 	MIMEMultipartPOSTForm = "multipart/form-data"
@@ -35,6 +37,7 @@ var Validator StructValidator = &defaultValidator{}
 var (
 	JSON          = jsonBinding{}
 	XML           = xmlBinding{}
+	MsgPack				= msgpackBinding{}
 	Form          = formBinding{}
 	FormPost      = formPostBinding{}
 	FormMultipart = formMultipartBinding{}
@@ -49,6 +52,8 @@ func Default(method, contentType string) Binding {
 			return JSON
 		case MIMEXML, MIMEXML2:
 			return XML
+		case MIMEMSGPACK, MIMEMSGPACK2
+			return MsgPack
 		default: //case MIMEPOSTForm, MIMEMultipartPOSTForm:
 			return Form
 		}
