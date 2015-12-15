@@ -1,5 +1,5 @@
 {
-	"ImportPath": "github.com/gin-gonic/gin",
+	"ImportPath": "github.com/halflife/gin",
 	"GoVersion": "go1.4.2",
 	"Packages": [
 		"./..."
@@ -16,10 +16,6 @@
 		{
 			"ImportPath": "github.com/manucorporat/stats",
 			"Rev": "8f2d6ace262eba462e9beb552382c98be51d807b"
-		},
-		{
-			"ImportPath": "github.com/mattn/go-colorable",
-			"Rev": "d67e0b7d1797975196499f79bcc322c08b9f218b"
 		},
 		{
 			"ImportPath": "github.com/stretchr/testify/assert",
