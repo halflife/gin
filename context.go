@@ -12,8 +12,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/gin-gonic/gin/binding"
-	"github.com/gin-gonic/gin/render"
+	"github.com/halflife/gin/binding"
+	"github.com/halflife/gin/render"
 	"github.com/manucorporat/sse"
 	"golang.org/x/net/context"
 )
@@ -24,6 +24,8 @@ const (
 	MIMEHTML              = binding.MIMEHTML
 	MIMEXML               = binding.MIMEXML
 	MIMEXML2              = binding.MIMEXML2
+	MIMEMSGPACK					  = binding.MIMEMSGPACK
+	MIMEMSGPACK2					= binding.MIMEMSGPACK2
 	MIMEPlain             = binding.MIMEPlain
 	MIMEPOSTForm          = binding.MIMEPOSTForm
 	MIMEMultipartPOSTForm = binding.MIMEMultipartPOSTForm
@@ -264,6 +266,11 @@ func (c *Context) BindJSON(obj interface{}) error {
 	return c.BindWith(obj, binding.JSON)
 }
 
+// BindMsgPack is a shortcut for c.BindWith(obj, binding.MsgPack)
+func (c *Context) BindMsgPack(obj interface{}) error {
+	return c.BindWith(obj, binding.MsgPack)
+}
+
 // BindWith binds the passed struct pointer using the specified binding engine.
 // See the binding package.
 func (c *Context) BindWith(obj interface{}, b binding.Binding) error {
@@ -364,6 +371,13 @@ func (c *Context) XML(code int, obj interface{}) {
 	c.Render(code, render.XML{Data: obj})
 }
 
+// MsgPack serializes the given struct as MsgPack into the respose body.
+// It also sets the Content-Type as "application/msgpack"
+// This is because application/x-msgpack is no longer valid
+func (c *Context) MsgPack(code int, obj interface{}) {
+	c.Render(code, render.MsgPack{Data: obj})
+}
+
 // String writes the given string into the response body.
 func (c *Context) String(code int, format string, values ...interface{}) {
 	c.writermem.WriteHeader(code)
@@ -422,12 +436,13 @@ func (c *Context) Stream(step func(w io.Writer) bool) {
 /************************************/
 
 type Negotiate struct {
-	Offered  []string
-	HTMLName string
-	HTMLData interface{}
-	JSONData interface{}
-	XMLData  interface{}
-	Data     interface{}
+	Offered  		[]string
+	HTMLName 		string
+	HTMLData 		interface{}
+	JSONData 		interface{}
+	XMLData  		interface{}
+	MsgPackData	interface{}
+	Data     		interface{}
 }
 
 func (c *Context) Negotiate(code int, config Negotiate) {
@@ -443,6 +458,10 @@ func (c *Context) Negotiate(code int, config Negotiate) {
 	case binding.MIMEXML:
 		data := chooseData(config.XMLData, config.Data)
 		c.XML(code, data)
+
+	case binding.MIMEMSGPACK, binding.MIMEMSGPACK2:
+		data := chooseData(config.MsgPackData, config.Data)
+		c.MsgPack(code, data)
 
 	default:
 		c.AbortWithError(http.StatusNotAcceptable, errors.New("the accepted formats are not offered by the server"))
