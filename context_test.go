@@ -11,6 +11,7 @@ import (
 	"mime/multipart"
 	"net/http"
 	"net/http/httptest"
+	"encoding/hex"
 	"strings"
 	"testing"
 	"time"
@@ -245,6 +246,17 @@ func TestContextPostFormMultipart(t *testing.T) {
 	assert.Equal(t, c.PostForm("foo"), "bar")
 	assert.Equal(t, c.PostForm("array"), "first")
 	assert.Equal(t, c.PostForm("bar"), "foo")
+}
+
+// Tests that the response is serialized as MsgPack
+// and Content-Type is set to application/json
+func TestContextRenderMsgPack(t *testing.T) {
+	c, w, _ := createTestContext()
+	c.MsgPack(201, H{"foo": "bar"})
+
+	assert.Equal(t, w.Code, 201)
+	assert.Equal(t, hex.EncodeToString([]byte(w.Body.String())), "81a3666f6fa3626172")
+	assert.Equal(t, w.HeaderMap.Get("Content-Type"), "application/msgpack; charset=utf-8")
 }
 
 // Tests that the response is serialized as JSON

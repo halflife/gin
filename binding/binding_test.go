@@ -25,12 +25,19 @@ type FooBarStruct struct {
 func TestBindingDefault(t *testing.T) {
 	assert.Equal(t, Default("GET", ""), Form)
 	assert.Equal(t, Default("GET", MIMEJSON), Form)
+	assert.Equal(t, Default("GET", MIMEMSGPACK), Form)
+	assert.Equal(t, Default("GET", MIMEMSGPACK2), Form)
 
 	assert.Equal(t, Default("POST", MIMEJSON), JSON)
 	assert.Equal(t, Default("PUT", MIMEJSON), JSON)
 
 	assert.Equal(t, Default("POST", MIMEXML), XML)
 	assert.Equal(t, Default("PUT", MIMEXML2), XML)
+
+	assert.Equal(t, Default("POST", MIMEMSGPACK), MsgPack)
+	assert.Equal(t, Default("POST", MIMEMSGPACK2), MsgPack)
+	assert.Equal(t, Default("PUT", MIMEMSGPACK), MsgPack)
+	assert.Equal(t, Default("PUT", MIMEMSGPACK2), MsgPack)
 
 	assert.Equal(t, Default("POST", MIMEPOSTForm), Form)
 	assert.Equal(t, Default("PUT", MIMEPOSTForm), Form)
@@ -44,6 +51,13 @@ func TestBindingJSON(t *testing.T) {
 		JSON, "json",
 		"/", "/",
 		`{"foo": "bar"}`, `{"bar": "foo"}`)
+}
+
+func TestBindingMsgPack(t *testing.T) {
+	testBodyBinding(t,
+		MsgPack, "msgpack",
+		"/", "/",
+		"\x81\xa3\x66\x6f\x6f\xa3\x62\x61\x72", "\x81\xa3\x62\x61\x72\xa3\x66\x6f\x6f")
 }
 
 func TestBindingForm(t *testing.T) {

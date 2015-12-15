@@ -6,6 +6,7 @@ package render
 
 import (
 	"encoding/xml"
+	"encoding/hex"
 	"html/template"
 	"net/http/httptest"
 	"testing"
@@ -15,6 +16,19 @@ import (
 
 // TODO unit tests
 // test errors
+
+func TestRenderMsgPack(t *testing.T) {
+	w := httptest.NewRecorder()
+	data := map[string]interface{}{
+		"foo": "bar",
+	}
+
+	err := (MsgPack{data}).Render(w)
+
+	assert.NoError(t, err)
+	assert.Equal(t, hex.EncodeToString([]byte(w.Body.String())), "81a3666f6fa3626172")
+	assert.Equal(t, w.Header().Get("Content-Type"), "application/msgpack; charset=utf-8")
+}
 
 func TestRenderJSON(t *testing.T) {
 	w := httptest.NewRecorder()
