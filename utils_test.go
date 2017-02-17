@@ -78,11 +78,7 @@ func TestFilterFlags(t *testing.T) {
 }
 
 func TestFunctionName(t *testing.T) {
-<<<<<<< HEAD
-	assert.Regexp(t, `^(.*/vendor/)?github.com/gin-gonic/gin.somefunction$`, nameOfFunction(somefunction))
-=======
-	assert.Equal(t, nameOfFunction(somefunction), "github.com/halflife/gin.somefunction")
->>>>>>> origin/master
+	assert.Regexp(t, `^(.*/vendor/)?github.com/halflife/gin.somefunction$`, nameOfFunction(somefunction))
 }
 
 func somefunction() {
