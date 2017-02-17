@@ -21,6 +21,7 @@ var (
 	_ Render     = MsgPack{}
 	_ HTMLRender = HTMLDebug{}
 	_ HTMLRender = HTMLProduction{}
+	_ Render     = YAML{}
 )
 
 func writeContentType(w http.ResponseWriter, value []string) {

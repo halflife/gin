@@ -16,6 +16,7 @@ const (
 	MIMEPlain             = "text/plain"
 	MIMEPOSTForm          = "application/x-www-form-urlencoded"
 	MIMEMultipartPOSTForm = "multipart/form-data"
+	MIMEPROTOBUF          = "application/x-protobuf"
 )
 
 type Binding interface {
@@ -41,6 +42,7 @@ var (
 	Form          = formBinding{}
 	FormPost      = formPostBinding{}
 	FormMultipart = formMultipartBinding{}
+	ProtoBuf      = protobufBinding{}
 )
 
 func Default(method, contentType string) Binding {
@@ -52,6 +54,8 @@ func Default(method, contentType string) Binding {
 			return JSON
 		case MIMEXML, MIMEXML2:
 			return XML
+		case MIMEPROTOBUF:
+			return ProtoBuf
 		case MIMEMSGPACK, MIMEMSGPACK2:
 			return MsgPack
 		default: //case MIMEPOSTForm, MIMEMultipartPOSTForm:
